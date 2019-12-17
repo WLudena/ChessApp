@@ -7,9 +7,7 @@ import ChessApp.model.Square;
 import ChessApp.model.types.PieceType;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ChessBoard {
 
@@ -19,19 +17,13 @@ public class ChessBoard {
 
     private List<Square> chessBoard = new ArrayList<>(); // Use an Array list as it becomes a bit awkward when adding values to simple array
 
-//    {
-//        createBoard();
-//        setUpWhiteSet();
-//        setUpBlackSet();
-//    }
-
-    //Create empty chessboard
     public void setUpBoard(){
         createEmptyBoard();
         setUpWhiteSet();
         setUpBlackSet();
     }
 
+    //Create empty chessboard
     public void createEmptyBoard(){
         for(char file : allFiles){
             for(int i = 1; i < 9; i++){
@@ -123,12 +115,4 @@ public class ChessBoard {
         return chessBoard;
     }
 
-    //For testing purposes
-    public void setUpWhiteSetMethod(){
-        setUpWhiteSet();
-    }
-
-    public void setUpBlackSetMethod(){
-        setUpBlackSet();
-    }
 }

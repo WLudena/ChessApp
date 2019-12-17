@@ -13,7 +13,7 @@ public class ChessBoardTest {
     @Before
     public void setUp(){
         newChess = new ChessBoard();
-        newChess.createEmptyBoard();
+        newChess.setUpBoard();
     }
 
     @After
@@ -36,158 +36,130 @@ public class ChessBoardTest {
         assertNotNull(newChess.getChessBoard());
     }
 
-    //Test empty squares
+    //Testing white set
     @Test
-    public void testCheckBoardStartsEmpty(){
+    public void testCheckNumberOfWhitePawns(){
 
-        long squareCount = newChess.getChessBoard().stream()
-                .filter(entry -> entry.getPiece()==null)
+        //Experimenting with streams
+        long pawnCount = newChess.getChessBoard().stream()
+                .filter(square -> square.getPiece()!=null)
+                .filter(filteredEntry ->filteredEntry.getPiece().getPieceType().getTypeCode()==6)
                 .count();
 
-        assertEquals(squareCount, 64);
+        assertEquals(pawnCount,8);
+    }
+
+    @Test
+    public void testCheckNumberOfWhiteRooks(){
+
+        long rookCount = newChess.getChessBoard().stream()
+                .filter(square -> square.getPiece()!=null)
+                .filter(square ->square.getPiece().getPieceType().getTypeCode()==3)
+                .count();
+
+        assertEquals(rookCount,2);
     }
     @Test
-    public void testCheckBoardSetsUpWhites(){
-        newChess.setUpWhiteSetMethod();
+    public void testCheckNumberOfWhiteBishops(){
 
-        newChess.getChessBoard().stream()
-                .forEach(square ->{
-                    if(square.getPiece()!=null){
-                        System.out.println(square.getPosition() +", " + square.getPiece().getPieceType());
-                    }else{
-                        System.out.println(square.getPosition() +", " + square.getPiece());
-                    }
-                        }
-                );
-//        newChess.getWhiteSet().stream()
-//                .forEach(piece -> assertTrue(piece.getPieceType().getTypeCode()>1));
+        long bishopCount = newChess.getChessBoard().stream()
+                .filter(square -> square.getPiece()!=null)
+                .filter(square ->square.getPiece().getPieceType().getTypeCode()==4)
+                .count();
+
+        assertEquals(bishopCount,2);
     }
 
+    @Test
+    public void testCheckNumberOfWhiteKnights(){
 
-//    //Testing white set
-//    @Test
-//    public void testCheckNumberOfWhitePawns(){
-//
-//        //Experimenting with streams
-//        long pawnCount = newChess.getChessBoard().entrySet().stream()
-//                .filter(entry -> entry.getValue()!=null) //Filter out null squares
-//                .filter(filteredEntry ->filteredEntry.getValue().getPieceType().getTypeCode()==6) //Filter out non-white pawn pieces
-//                .count();
-//
-//        assertEquals(pawnCount,8);
-//    }
-//
-//    @Test
-//    public void testCheckNumberOfWhiteRooks(){
-//
-//        long rookCount = newChess.getChessBoard().entrySet().stream()
-//                .filter(entry -> entry.getValue()!=null)
-//                .filter(filteredEntry ->filteredEntry.getValue().getPieceType().getTypeCode()==3)
-//                .count();
-//
-//        assertEquals(rookCount,2);
-//    }
-//    @Test
-//    public void testCheckNumberOfWhiteBishops(){
-//
-//        long bishopCount = newChess.getChessBoard().entrySet().stream()
-//                .filter(entry -> entry.getValue()!=null)
-//                .filter(filteredEntry ->filteredEntry.getValue().getPieceType().getTypeCode()==4) //Filter out non-white pawn pieces
-//                .count();
-//
-//        assertEquals(bishopCount,2);
-//    }
-//
-//    @Test
-//    public void testCheckNumberOfWhiteKnights(){
-//
-//        long knightCount = newChess.getChessBoard().entrySet().stream()
-//                .filter(entry -> entry.getValue()!=null)
-//                .filter(filteredEntry ->filteredEntry.getValue().getPieceType().getTypeCode()==5) //Filter out non-white pawn pieces
-//                .count();
-//
-//        assertEquals(knightCount,2);
-//
-//    }
-//
-//    @Test
-//    public void testCheckSingleWhiteQueenExists(){
-//        long queenCount = newChess.getChessBoard().entrySet().stream()
-//                .filter(entry -> entry.getValue()!=null)
-//                .filter(filteredEntry ->filteredEntry.getValue().getPieceType().getTypeCode()==2) //Filter out non-white pawn pieces
-//                .count();
-//
-//        assertEquals(queenCount,1);
-//    }
-//
-//    @Test
-//    public void testCheckSingleWhiteKingExists(){
-//        long kingCount = newChess.getChessBoard().entrySet().stream()
-//                .filter(entry -> entry.getValue()!=null)
-//                .filter(filteredEntry ->filteredEntry.getValue().getPieceType().getTypeCode()==1) //Filter out non-white pawn pieces
-//                .count();
-//
-//        assertEquals(kingCount,1);
-//    }
-//
-//    //Testing black set
-//    @Test
-//    public void testCheckNumberOfBlackPawns(){
-//        long pawnCount = newChess.getChessBoard().entrySet().stream()
-//                .filter(entry -> entry.getValue()!=null)
-//                .filter(filteredEntry ->filteredEntry.getValue().getPieceType().getTypeCode()==-6) //Filter out non-white pawn pieces
-//                .count();
-//
-//        assertEquals(pawnCount,8);
-//    }
-//
-//    @Test
-//    public void testCheckNumberOfBlackRooks(){
-//        long rookCount = newChess.getChessBoard().entrySet().stream()
-//                .filter(entry -> entry.getValue()!=null)
-//                .filter(filteredEntry ->filteredEntry.getValue().getPieceType().getTypeCode()==-3) //Filter out non-white pawn pieces
-//                .count();
-//
-//        assertEquals(rookCount,2);
-//    }
-//
-//    @Test
-//    public void testCheckNumberOfBlackBishops(){
-//        long bishopCount = newChess.getChessBoard().entrySet().stream()
-//                .filter(entry -> entry.getValue()!=null)
-//                .filter(filteredEntry ->filteredEntry.getValue().getPieceType().getTypeCode()==-4) //Filter out non-white pawn pieces
-//                .count();
-//
-//        assertEquals(bishopCount,2);
-//    }
-//
-//    @Test
-//    public void testCheckNumberOfBlackKnights(){
-//        long knightCount = newChess.getChessBoard().entrySet().stream()
-//                .filter(entry -> entry.getValue()!=null)
-//                .filter(filteredEntry ->filteredEntry.getValue().getPieceType().getTypeCode()==-5) //Filter out non-white pawn pieces
-//                .count();
-//
-//        assertEquals(knightCount,2);
-//    }
-//
-//    @Test
-//    public void testCheckSingleBlackQueenExists(){
-//        long queenCount = newChess.getChessBoard().entrySet().stream()
-//                .filter(entry -> entry.getValue()!=null)
-//                .filter(filteredEntry ->filteredEntry.getValue().getPieceType().getTypeCode()==-2) //Filter out non-white pawn pieces
-//                .count();
-//
-//        assertEquals(queenCount,1);
-//    }
-//
-//    @Test
-//    public void testCheckSingleBlackKingExists(){
-//        long kingCount = newChess.getChessBoard().entrySet().stream()
-//                .filter(entry -> entry.getValue()!=null)
-//                .filter(filteredEntry ->filteredEntry.getValue().getPieceType().getTypeCode()==-1) //Filter out non-white pawn pieces
-//                .count();
-//
-//        assertEquals(kingCount,1);
-//    }
+        long knightCount = newChess.getChessBoard().stream()
+                .filter(square -> square.getPiece()!=null)
+                .filter(filteredEntry ->filteredEntry.getPiece().getPieceType().getTypeCode()==5)
+                .count();
+
+        assertEquals(knightCount,2);
+
+    }
+
+    @Test
+    public void testCheckSingleWhiteQueenExists(){
+        long queenCount = newChess.getChessBoard().stream()
+                .filter(square -> square.getPiece()!=null)
+                .filter(square ->square.getPiece().getPieceType().getTypeCode()==2)
+                .count();
+
+        assertEquals(queenCount,1);
+    }
+
+    @Test
+    public void testCheckSingleWhiteKingExists(){
+        long kingCount = newChess.getChessBoard().stream()
+                .filter(square -> square.getPiece()!=null)
+                .filter(square ->square.getPiece().getPieceType().getTypeCode()==1)
+                .count();
+
+        assertEquals(kingCount,1);
+    }
+
+    //Testing black set
+    @Test
+    public void testCheckNumberOfBlackPawns(){
+        long pawnCount = newChess.getChessBoard().stream()
+                .filter(square -> square.getPiece()!=null)
+                .filter(square ->square.getPiece().getPieceType().getTypeCode()==-6)
+                .count();
+
+        assertEquals(pawnCount,8);
+    }
+
+    @Test
+    public void testCheckNumberOfBlackRooks(){
+        long rookCount = newChess.getChessBoard().stream()
+                .filter(square -> square.getPiece()!=null)
+                .filter(square ->square.getPiece().getPieceType().getTypeCode()==-3)
+                .count();
+
+        assertEquals(rookCount,2);
+    }
+
+    @Test
+    public void testCheckNumberOfBlackBishops(){
+        long bishopCount = newChess.getChessBoard().stream()
+                .filter(square -> square.getPiece()!=null)
+                .filter(square ->square.getPiece().getPieceType().getTypeCode()==-4)
+                .count();
+
+        assertEquals(bishopCount,2);
+    }
+
+    @Test
+    public void testCheckNumberOfBlackKnights(){
+        long knightCount = newChess.getChessBoard().stream()
+                .filter(square -> square.getPiece()!=null)
+                .filter(square ->square.getPiece().getPieceType().getTypeCode()==-5)
+                .count();
+
+        assertEquals(knightCount,2);
+    }
+
+    @Test
+    public void testCheckSingleBlackQueenExists(){
+        long queenCount = newChess.getChessBoard().stream()
+                .filter(square -> square.getPiece()!=null)
+                .filter(square ->square.getPiece().getPieceType().getTypeCode()==-2)
+                .count();
+
+        assertEquals(queenCount,1);
+    }
+
+    @Test
+    public void testCheckSingleBlackKingExists(){
+        long kingCount = newChess.getChessBoard().stream()
+                .filter(square -> square.getPiece()!=null)
+                .filter(square ->square.getPiece().getPieceType().getTypeCode()==-1)
+                .count();
+
+        assertEquals(kingCount,1);
+    }
 }
