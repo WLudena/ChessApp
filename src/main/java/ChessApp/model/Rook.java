@@ -13,7 +13,7 @@ public class Rook extends Piece {
     }
 
     @Override
-    public void movePiece(char nextFile, int nextRank, List<Square> board) {
-
+    public List<Square> movePiece(char nextFile, int nextRank, List<Square> board) {
+        return null;
     }
 }

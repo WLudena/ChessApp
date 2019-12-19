@@ -1,9 +1,6 @@
 package ChessApp.controller;
 
-import ChessApp.model.Pawn;
-import ChessApp.model.Piece;
-import ChessApp.model.Rook;
-import ChessApp.model.Square;
+import ChessApp.model.*;
 import ChessApp.model.types.PieceType;
 
 import java.util.ArrayList;
@@ -41,12 +38,12 @@ public class ChessBoard {
         }
 
         //Create knights
-        whiteSet.add(new Rook(PieceType.WHITE_KNIGHT,'b',1));
-        whiteSet.add(new Rook(PieceType.WHITE_KNIGHT,'g',1));
+        whiteSet.add(new Knight(PieceType.WHITE_KNIGHT,'b',1));
+        whiteSet.add(new Knight(PieceType.WHITE_KNIGHT,'g',1));
 
         //Create bishops
-        whiteSet.add(new Rook(PieceType.WHITE_BISHOP,'c',1));
-        whiteSet.add(new Rook(PieceType.WHITE_BISHOP,'f',1));
+        whiteSet.add(new Bishop(PieceType.WHITE_BISHOP,'c',1));
+        whiteSet.add(new Bishop(PieceType.WHITE_BISHOP,'f',1));
 
 
         //Create rooks
@@ -54,10 +51,10 @@ public class ChessBoard {
         whiteSet.add(new Rook(PieceType.WHITE_ROOK,'h',1));
 
         //Create queen
-        whiteSet.add(new Rook(PieceType.WHITE_QUEEN,'d',1));
+        whiteSet.add(new Queen(PieceType.WHITE_QUEEN,'d',1));
 
         //Create king
-        whiteSet.add(new Rook(PieceType.WHITE_KING,'e',1));
+        whiteSet.add(new King(PieceType.WHITE_KING,'e',1));
 
         //Assign each piece to board
         assignPiece(whiteSet);
@@ -71,22 +68,22 @@ public class ChessBoard {
             blackSet.add(new Pawn(PieceType.BLACK_PAWN, allFiles[i],7));
         }
         //Create knights
-        blackSet.add(new Rook(PieceType.BLACK_KNIGHT,'b',8));
-        blackSet.add(new Rook(PieceType.BLACK_KNIGHT,'g',8));
+        blackSet.add(new Knight(PieceType.BLACK_KNIGHT,'b',8));
+        blackSet.add(new Knight(PieceType.BLACK_KNIGHT,'g',8));
 
         //Create bishops
-        blackSet.add(new Rook(PieceType.BLACK_BISHOP,'c',8));
-        blackSet.add(new Rook(PieceType.BLACK_BISHOP,'f',8));
+        blackSet.add(new Bishop(PieceType.BLACK_BISHOP,'c',8));
+        blackSet.add(new Bishop(PieceType.BLACK_BISHOP,'f',8));
 
         //Create rooks
         blackSet.add(new Rook(PieceType.BLACK_ROOK,'a',8));
         blackSet.add(new Rook(PieceType.BLACK_ROOK,'h',8));
 
         //Create queen
-        blackSet.add(new Rook(PieceType.BLACK_QUEEN,'d',8));
+        blackSet.add(new Queen(PieceType.BLACK_QUEEN,'d',8));
 
         //Create king
-        blackSet.add(new Rook(PieceType.BLACK_KING,'e',8));
+        blackSet.add(new King(PieceType.BLACK_KING,'e',8));
 
         //Assign each piece to board
         assignPiece(blackSet);

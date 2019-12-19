@@ -162,4 +162,17 @@ public class ChessBoardTest {
 
         assertEquals(kingCount,1);
     }
+
+    @Test
+    public void testSeeBoard(){
+        newChess.getChessBoard().stream()
+                .forEach(square -> {
+                    if(square.getPiece()!=null){
+                        System.out.println(square.getPosition()+ ", " + square.getPiece());
+                    }else{
+                        System.out.println(square.getPosition()+", " + square.getPiece());
+                    }
+
+                });
+    }
 }

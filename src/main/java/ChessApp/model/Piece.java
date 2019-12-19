@@ -8,6 +8,15 @@ public abstract class Piece implements MovementInterface{
     private PieceType pieceType;
     private char currentFile; //Horizontal position --> from A to H ** Same as current X position
     private int currentRank; //Vertical position --> from 1-8 ** Same as current Y position
+    private boolean isTaken = false;
+
+    public boolean isTaken() {
+        return isTaken;
+    }
+
+    public void setTaken(boolean taken) {
+        isTaken = taken;
+    }
 
     public Piece(){
 

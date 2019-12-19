@@ -6,6 +6,8 @@ import java.util.List;
 
 public class Pawn extends Piece {
 
+    private boolean hasMoved = false; // Since pawn has the option to move twice on its first move, this will help keep track of it
+
     public Pawn(){}
 
     public Pawn(PieceType pieceType, char currentFile, int currentRank) {
@@ -13,7 +15,15 @@ public class Pawn extends Piece {
     }
 
     @Override
-    public void movePiece(char nextFile, int nextRank, List<Square> board) {
+    public List<Square> movePiece(char nextFile, int nextRank, List<Square> board) {
+        return null;
+    }
 
+    public boolean getHasMoved() {
+        return hasMoved;
+    }
+
+    public void setHasMoved(boolean hasMoved) {
+        this.hasMoved = hasMoved;
     }
 }
