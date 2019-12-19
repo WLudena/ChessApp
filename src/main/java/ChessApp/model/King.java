@@ -18,7 +18,7 @@ public class King extends Piece {
     }
 
     @Override
-    public List<Square> movePiece(char nextFile, int nextRank, List<Square> board) throws InvalidMoveException {
+    public void movePiece(char nextFile, int nextRank, List<Square> board) throws InvalidMoveException {
 
         String nextPosition = Character.toString(nextFile) + nextRank;
 
@@ -53,8 +53,6 @@ public class King extends Piece {
         } else {
             throw new InvalidMoveException();
         }
-
-        return board;
     }
 
     private boolean canMove(char nextFile, int nextRank, List<Square> board) {

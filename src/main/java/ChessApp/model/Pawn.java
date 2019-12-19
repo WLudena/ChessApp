@@ -15,8 +15,7 @@ public class Pawn extends Piece {
     }
 
     @Override
-    public List<Square> movePiece(char nextFile, int nextRank, List<Square> board) {
-        return null;
+    public void movePiece(char nextFile, int nextRank, List<Square> board) {
     }
 
     public boolean getHasMoved() {

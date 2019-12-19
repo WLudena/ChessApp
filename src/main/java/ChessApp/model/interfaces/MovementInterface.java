@@ -7,6 +7,6 @@ import java.util.List;
 
 public interface MovementInterface {
 
-    List<Square> movePiece(char nextFile, int nextRank, List<Square> board) throws InvalidMoveException;
+    void movePiece(char nextFile, int nextRank, List<Square> board) throws InvalidMoveException;
 
 }

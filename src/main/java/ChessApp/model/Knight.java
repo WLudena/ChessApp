@@ -2,10 +2,7 @@ package ChessApp.model;
 
 import ChessApp.model.types.PieceType;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.IntStream;
 
 public class Knight extends Piece {
 
@@ -16,8 +13,7 @@ public class Knight extends Piece {
     }
 
     @Override
-    public List<Square> movePiece(char nextFile, int nextRank, List<Square> board) {
-        return null;
+    public void movePiece(char nextFile, int nextRank, List<Square> board) {
     }
 
 }

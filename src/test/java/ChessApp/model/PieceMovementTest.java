@@ -81,7 +81,7 @@ public class PieceMovementTest {
     }
 
     @Test(expected = InvalidMoveException.class)
-    public void testKingIlegallMove() throws InvalidMoveException {
+    public void testKingIlegalMove() throws InvalidMoveException {
         Piece king = new King(PieceType.WHITE_KING, 'E', 5);
 
         for (Square square : chessBoard.getChessBoard()) {
@@ -119,7 +119,7 @@ public class PieceMovementTest {
     }
 
     @Test(expected = InvalidMoveException.class)
-    public void testCannotEatSameSetPiece() {
+    public void testCannotEatSameSetPiece() throws InvalidMoveException {
         for (Square square : chessBoard.getChessBoard()) {
             if (square.getPiece() == null && square.getPosition().equals("E5")) {
                 square.setPiece(new King(PieceType.WHITE_KING, square.getPosition().charAt(0), Integer.parseInt(square.getPosition().substring(1))));
@@ -132,12 +132,8 @@ public class PieceMovementTest {
         Square nextSquare = chessBoard.getChessBoard().get(37);
 
         Piece king = currentSquare.getPiece();
-        try {
-            king.movePiece('E', 6, chessBoard.getChessBoard());
-        } catch (InvalidMoveException e) {
-            //
-        }
-        assertTrue(nextSquare.getPiece().getCurrentPosition().equals("E6"));
+
+        king.movePiece('E', 6, chessBoard.getChessBoard());
 
     }
 }
