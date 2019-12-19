@@ -15,5 +15,15 @@ public class Knight extends Piece {
     @Override
     public void movePiece(char nextFile, int nextRank, List<Square> board) {
     }
+    private boolean canMove(){
+        return false;
+    }
 
+    private List<String> possibleMoves(){
+        return null;
+    }
+
+    private String getLocationHelper(){
+        return null;
+    }
 }
