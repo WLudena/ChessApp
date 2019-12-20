@@ -1,27 +1,65 @@
 package ChessApp.model;
 
+import ChessApp.exceptions.InvalidMoveException;
 import ChessApp.model.types.PieceType;
 
 import java.util.*;
 
 public class Queen extends Piece {
 
-    public Queen(){}
+    public Queen() {
+    }
 
     public Queen(PieceType pieceType, char currentFile, int currentRank) {
         super(pieceType, currentFile, currentRank);
     }
 
     @Override
-    public void movePiece(char nextFile, int nextRank, List<Square> board) {
+    public void movePiece(char nextFile, int nextRank, List<Square> board) throws InvalidMoveException {
+
+        String nextPosition = Character.toString(nextFile) + nextRank;
+
+        if (canMove(nextPosition, board)) {
+
+            Square currentSquare = board.stream()
+                    .filter(square -> square.getPosition().equals(getCurrentPosition()))
+                    .findFirst()
+                    .orElse(null);
+
+            Square nextSquare = board.stream()
+                    .filter(square -> square.getPosition().equals(nextPosition))
+                    .findFirst()
+                    .orElse(null);
+
+            if (nextSquare.getPiece() != null) {
+                if (getPieceType().getTypeCode() > 0 && nextSquare.getPiece().getPieceType().getTypeCode() > 0) {
+                    throw new InvalidMoveException();
+                } else if (getPieceType().getTypeCode() < 0 && nextSquare.getPiece().getPieceType().getTypeCode() < 0) {
+                    throw new InvalidMoveException();
+                } else {
+                    nextSquare.setPiece(new Queen(getPieceType(), nextFile, nextRank));
+                    currentSquare.setPiece(null);
+                }
+            } else {
+                nextSquare.setPiece(new Queen(getPieceType(), nextFile, nextRank));
+                currentSquare.setPiece(null);
+            }
+        } else {
+            throw new InvalidMoveException();
+        }
     }
 
-    private boolean canMove(){
-        return false;
+    private boolean canMove(String nextPosition, List<Square> board) {
+
+        if (possibleMoves(board).contains(nextPosition)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    //Lists all possible moves the queen can make from current position (does not check if a piece is already in place)
-    private List<String> possibleMoves(){
+    //Lists all possible moves the queen can make from current position (checks if a piece exists on the next square)
+    private List<String> possibleMoves(List<Square> board) {
         List<Character> fileList = Arrays.asList('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H');
 
         List<String> possibleMoves = new ArrayList<>();
@@ -35,76 +73,125 @@ public class Queen extends Piece {
             }
         }
 
-        for(String location : allPossibleLocations){
-            if (location.equals(getCurrentPosition())) {
+        int increase = 1;
 
-                int increase = 1;
+        int decrease = -1;
 
-                int decrease = -1;
+        char currentFile = getCurrentPosition().charAt(0);
+        int currentRank = Integer.parseInt(getCurrentPosition().substring(1));
 
-                char currentFile = location.charAt(0);
-                int currentRank = Integer.parseInt(location.substring(1));
+        int fileIndex = fileList.indexOf(currentFile);
 
-                int fileIndex = fileList.indexOf(currentFile);
+        //[0,1],[0,2]...[0,7] --> forward
+        for (int i = Integer.parseInt(getCurrentPosition().substring(1)) + 1; i < 9; i++) {
+            if (!squareIsEmpty(Character.toString(currentFile) + i, board)) {
 
-                //[0,1],[0,2]...[0,7] --> forward
-                for(int i = Integer.parseInt(location.substring(1)) + 1; i < 9;i++){
-                    possibleMoves.add(Character.toString(currentFile) + i);
-                }
+                //Stop adding locations the moment it reaches an already populated square
+                possibleMoves.add(Character.toString(currentFile) + i);
+                break;
 
-                //[1,1],[2,2]...[7,7] --> forward-right
-                for(int i = fileIndex + 1 ; i < fileList.size();i++){
-                    if(currentRank+increase < 9){
-                        possibleMoves.add(fileList.get(i) + String.valueOf((currentRank+increase)));
-                        increase++;
-                    }
-                }
+            } else {
+                possibleMoves.add(Character.toString(currentFile) + i);
+            }
+        }
 
-                //[1,0],[2,0]...[7,0] --> right
-                for(int i = fileIndex + 1 ; i < fileList.size();i++){
-                    possibleMoves.add(fileList.get(i) + getCurrentPosition().substring(1));
-                }
-
-                //[1,-1],[2,-2]...[7,-7] --> backward-right
-                for(int i = fileIndex + 1 ; i < fileList.size();i++){
-                    if(currentRank+decrease > 0){
-                        possibleMoves.add(fileList.get(i) + String.valueOf((currentRank+decrease)));
-                        decrease--;
-                    }
-                }
-
-                //[0,-1],[0,-2]...[0,-7] --> backward
-                for(int i = Integer.parseInt(location.substring(1)) - 1; i > 0 ;i--){
-                    possibleMoves.add(Character.toString(currentFile) + i);
-                }
-
-                //[-1,-1],[-2,-2]...[-7,-7] --> backward-left
-                decrease = -1;
-                for(int i = Integer.parseInt(location.substring(1)) - 1; i > 0 ;i--){
-                    if(fileIndex+decrease > -1){
-                        possibleMoves.add(Character.toString(fileList.get(fileIndex+decrease)) + i);
-                        decrease--;
-                    }
-                }
-
-                //[-1,0],[-2,0]...[-7,0] --> left
-                for(int i = fileIndex - 1 ; i >= 0 ;i--){
-                    possibleMoves.add(fileList.get(i) + getCurrentPosition().substring(1));
-                }
-
-                //[-1,1],[-2,2]...[-7,7] --> forward-left
-                increase = 1;
-                for(int i = fileIndex - 1 ; i >= 0 ;i--){
-                    if(currentRank+increase < 9){
-                        possibleMoves.add(fileList.get(i) + String.valueOf((currentRank+increase)));
-                        increase++;
-                    }
+        //[1,1],[2,2]...[7,7] --> forward-right
+        for (int i = fileIndex + 1; i < fileList.size(); i++) {
+            if (currentRank + increase < 9) {
+                if (!squareIsEmpty(fileList.get(i) + String.valueOf((currentRank + increase)), board)) {
+                    possibleMoves.add(fileList.get(i) + String.valueOf((currentRank + increase)));
+                    break;
+                } else {
+                    possibleMoves.add(fileList.get(i) + String.valueOf((currentRank + increase)));
+                    increase++;
                 }
             }
         }
 
+        //[1,0],[2,0]...[7,0] --> right
+        for (int i = fileIndex + 1; i < fileList.size(); i++) {
+            if (!squareIsEmpty(fileList.get(i) + getCurrentPosition().substring(1), board)) {
+                possibleMoves.add(fileList.get(i) + getCurrentPosition().substring(1));
+                break;
+            } else {
+                possibleMoves.add(fileList.get(i) + getCurrentPosition().substring(1));
+            }
+        }
+
+        //[1,-1],[2,-2]...[7,-7] --> backward-right
+        for (int i = fileIndex + 1; i < fileList.size(); i++) {
+            if (currentRank + decrease > 0) {
+                if (!squareIsEmpty(fileList.get(i) + String.valueOf((currentRank + decrease)), board)) {
+                    possibleMoves.add(fileList.get(i) + String.valueOf((currentRank + decrease)));
+                    break;
+                } else {
+                    possibleMoves.add(fileList.get(i) + String.valueOf((currentRank + decrease)));
+                    decrease--;
+                }
+            }
+        }
+
+        //[0,-1],[0,-2]...[0,-7] --> backward
+        for (int i = Integer.parseInt(getCurrentPosition().substring(1)) - 1; i > 0; i--) {
+            if (!squareIsEmpty(Character.toString(currentFile) + i, board)) {
+                possibleMoves.add(Character.toString(currentFile) + i);
+                break;
+            } else {
+                possibleMoves.add(Character.toString(currentFile) + i);
+            }
+        }
+
+        //[-1,-1],[-2,-2]...[-7,-7] --> backward-left
+        decrease = -1;
+        for (int i = Integer.parseInt(getCurrentPosition().substring(1)) - 1; i > 0; i--) {
+            if (fileIndex + decrease > -1) {
+                if (!squareIsEmpty(Character.toString(fileList.get(fileIndex + decrease)) + i, board)) {
+                    possibleMoves.add(Character.toString(fileList.get(fileIndex + decrease)) + i);
+                    break;
+                } else {
+                    possibleMoves.add(Character.toString(fileList.get(fileIndex + decrease)) + i);
+                    decrease--;
+                }
+            }
+        }
+
+        //[-1,0],[-2,0]...[-7,0] --> left
+        for (int i = fileIndex - 1; i >= 0; i--) {
+            if (!squareIsEmpty(fileList.get(i) + getCurrentPosition().substring(1), board)) {
+                possibleMoves.add(fileList.get(i) + getCurrentPosition().substring(1));
+                break;
+            } else {
+                possibleMoves.add(fileList.get(i) + getCurrentPosition().substring(1));
+            }
+        }
+
+        //[-1,1],[-2,2]...[-7,7] --> forward-left
+        increase = 1;
+        for (int i = fileIndex - 1; i >= 0; i--) {
+            if (currentRank + increase < 9) {
+                if (!squareIsEmpty(fileList.get(i) + String.valueOf((currentRank + increase)), board)) {
+                    possibleMoves.add(fileList.get(i) + String.valueOf((currentRank + increase)));
+                    break;
+                } else {
+                    possibleMoves.add(fileList.get(i) + String.valueOf((currentRank + increase)));
+                    increase++;
+                }
+            }
+        }
 
         return possibleMoves;
+    }
+
+    //Helper method to find out whether a square contains a piece or not
+    private boolean squareIsEmpty(String location, List<Square> board) {
+        return board.stream()
+                .anyMatch(square -> {
+                    if (square.getPosition().equals(location) && square.getPiece() == null) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                });
     }
 
 }

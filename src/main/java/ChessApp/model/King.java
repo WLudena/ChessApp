@@ -22,7 +22,7 @@ public class King extends Piece {
 
         String nextPosition = Character.toString(nextFile) + nextRank;
 
-        if (canMove(nextFile, nextRank, board)) {
+        if (canMove(nextPosition)) {
 
             Square currentSquare = board.stream()
                     .filter(square -> square.getPosition().equals(getCurrentPosition()))
@@ -36,17 +36,16 @@ public class King extends Piece {
 
             if (nextSquare.getPiece() != null) { //If nextSquare is not empty, check both pieces
 
-                if (this.getPieceType().getTypeCode() > 0 && nextSquare.getPiece().getPieceType().getTypeCode() > 0) { //If both (moving and nextSquare) pieces are white
+                if (getPieceType().getTypeCode() > 0 && nextSquare.getPiece().getPieceType().getTypeCode() > 0) { //If both (moving and nextSquare) pieces are white
                     throw new InvalidMoveException();
-                } else if (this.getPieceType().getTypeCode() < 0 && nextSquare.getPiece().getPieceType().getTypeCode() < 0) { //If both (moving and nextSquare) pieces are black
+                } else if (getPieceType().getTypeCode() < 0 && nextSquare.getPiece().getPieceType().getTypeCode() < 0) { //If both (moving and nextSquare) pieces are black
                     throw new InvalidMoveException();
                 } else {
-                    nextSquare.setPiece(new King(this.getPieceType(), nextFile, nextRank));
+                    nextSquare.setPiece(new King(getPieceType(), nextFile, nextRank));
                     currentSquare.setPiece(null);
                 }
-
             } else {
-                nextSquare.setPiece(new King(this.getPieceType(), nextFile, nextRank));
+                nextSquare.setPiece(new King(getPieceType(), nextFile, nextRank));
                 currentSquare.setPiece(null);
             }
 
@@ -55,20 +54,16 @@ public class King extends Piece {
         }
     }
 
-    private boolean canMove(char nextFile, int nextRank, List<Square> board) {
-        String nextPosition = Character.toString(nextFile) + nextRank;
+    private boolean canMove(String nextPosition) {
 
-        //Store all possible legal moves
-        List<String> legalMoves = possibleMoves(board);
-
-        if (legalMoves.contains(nextPosition)) {
+        if (possibleMoves().contains(nextPosition)) {
             return true;
         } else {
             return false;
         }
     }
 
-    private List<String> possibleMoves(List<Square> board) {
+    private List<String> possibleMoves() {
 
         char[] files = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'};
 
