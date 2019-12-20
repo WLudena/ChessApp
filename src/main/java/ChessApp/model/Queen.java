@@ -19,7 +19,7 @@ public class Queen extends Piece {
 
         String nextPosition = Character.toString(nextFile) + nextRank;
 
-        if (canMove(nextPosition, board)) {
+        if (possibleMoves(board).contains(nextPosition)) {
 
             Square currentSquare = board.stream()
                     .filter(square -> square.getPosition().equals(getCurrentPosition()))
@@ -49,60 +49,61 @@ public class Queen extends Piece {
         }
     }
 
-    private boolean canMove(String nextPosition, List<Square> board) {
-
-        if (possibleMoves(board).contains(nextPosition)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     //Lists all possible moves the queen can make from current position (checks if a piece exists on the next square)
     private List<String> possibleMoves(List<Square> board) {
         List<Character> fileList = Arrays.asList('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H');
 
         List<String> possibleMoves = new ArrayList<>();
 
-        //Map all possible locations on the board
-        List<String> allPossibleLocations = new ArrayList<>();
-
-        for (Character file : fileList) {
-            for (int i = 1; i < 9; i++) {
-                allPossibleLocations.add(Character.toString(file) + i);
-            }
-        }
-
+        //Used to keep track of file/rank when moving in diagonal direction
         int increase = 1;
-
         int decrease = -1;
 
-        char currentFile = getCurrentPosition().charAt(0);
-        int currentRank = Integer.parseInt(getCurrentPosition().substring(1));
+        //Used to track index of file in fileList<>
+        int fileIndex = fileList.indexOf(getCurrentFile());
 
-        int fileIndex = fileList.indexOf(currentFile);
+        /*
+        Since board is two-dimensional ([x,y]), we can use this to keep track of where the piece would go next.
+        E.g.: if a piece initial position is [0,0], mapping it would look something like this:
+
+                                             :
+                                             :
+                                           [0,2]
+                                           [0,1]
+                                             ^
+                                             |
+                         ...[-2,0][-1,0] <-[0,0]-> [1,0][2,0]...
+                                             |
+                                             V
+                                           [0,-1]
+                                           [0,-2]
+                                             :
+                                             :
+
+         Each would represent a step in their respective directions (changes for every piece)
+         */
 
         //[0,1],[0,2]...[0,7] --> forward
         for (int i = Integer.parseInt(getCurrentPosition().substring(1)) + 1; i < 9; i++) {
-            if (!squareIsEmpty(Character.toString(currentFile) + i, board)) {
+            if (!squareIsEmpty(Character.toString(getCurrentFile()) + i, board)) {
 
                 //Stop adding locations the moment it reaches an already populated square
-                possibleMoves.add(Character.toString(currentFile) + i);
+                possibleMoves.add(Character.toString(getCurrentFile()) + i);
                 break;
 
             } else {
-                possibleMoves.add(Character.toString(currentFile) + i);
+                possibleMoves.add(Character.toString(getCurrentFile()) + i);
             }
         }
 
         //[1,1],[2,2]...[7,7] --> forward-right
         for (int i = fileIndex + 1; i < fileList.size(); i++) {
-            if (currentRank + increase < 9) {
-                if (!squareIsEmpty(fileList.get(i) + String.valueOf((currentRank + increase)), board)) {
-                    possibleMoves.add(fileList.get(i) + String.valueOf((currentRank + increase)));
+            if (getCurrentRank() + increase < 9) {
+                if (!squareIsEmpty(fileList.get(i) + String.valueOf((getCurrentRank() + increase)), board)) {
+                    possibleMoves.add(fileList.get(i) + String.valueOf((getCurrentRank() + increase)));
                     break;
                 } else {
-                    possibleMoves.add(fileList.get(i) + String.valueOf((currentRank + increase)));
+                    possibleMoves.add(fileList.get(i) + String.valueOf((getCurrentPosition() + increase)));
                     increase++;
                 }
             }
@@ -120,12 +121,12 @@ public class Queen extends Piece {
 
         //[1,-1],[2,-2]...[7,-7] --> backward-right
         for (int i = fileIndex + 1; i < fileList.size(); i++) {
-            if (currentRank + decrease > 0) {
-                if (!squareIsEmpty(fileList.get(i) + String.valueOf((currentRank + decrease)), board)) {
-                    possibleMoves.add(fileList.get(i) + String.valueOf((currentRank + decrease)));
+            if (getCurrentRank() + decrease > 0) {
+                if (!squareIsEmpty(fileList.get(i) + String.valueOf((getCurrentRank() + decrease)), board)) {
+                    possibleMoves.add(fileList.get(i) + String.valueOf((getCurrentRank() + decrease)));
                     break;
                 } else {
-                    possibleMoves.add(fileList.get(i) + String.valueOf((currentRank + decrease)));
+                    possibleMoves.add(fileList.get(i) + String.valueOf((getCurrentRank() + decrease)));
                     decrease--;
                 }
             }
@@ -133,11 +134,11 @@ public class Queen extends Piece {
 
         //[0,-1],[0,-2]...[0,-7] --> backward
         for (int i = Integer.parseInt(getCurrentPosition().substring(1)) - 1; i > 0; i--) {
-            if (!squareIsEmpty(Character.toString(currentFile) + i, board)) {
-                possibleMoves.add(Character.toString(currentFile) + i);
+            if (!squareIsEmpty(Character.toString(getCurrentFile()) + i, board)) {
+                possibleMoves.add(Character.toString(getCurrentFile()) + i);
                 break;
             } else {
-                possibleMoves.add(Character.toString(currentFile) + i);
+                possibleMoves.add(Character.toString(getCurrentFile()) + i);
             }
         }
 
@@ -168,12 +169,12 @@ public class Queen extends Piece {
         //[-1,1],[-2,2]...[-7,7] --> forward-left
         increase = 1;
         for (int i = fileIndex - 1; i >= 0; i--) {
-            if (currentRank + increase < 9) {
-                if (!squareIsEmpty(fileList.get(i) + String.valueOf((currentRank + increase)), board)) {
-                    possibleMoves.add(fileList.get(i) + String.valueOf((currentRank + increase)));
+            if (getCurrentRank() + increase < 9) {
+                if (!squareIsEmpty(fileList.get(i) + String.valueOf((getCurrentRank() + increase)), board)) {
+                    possibleMoves.add(fileList.get(i) + String.valueOf((getCurrentRank() + increase)));
                     break;
                 } else {
-                    possibleMoves.add(fileList.get(i) + String.valueOf((currentRank + increase)));
+                    possibleMoves.add(fileList.get(i) + String.valueOf((getCurrentRank() + increase)));
                     increase++;
                 }
             }

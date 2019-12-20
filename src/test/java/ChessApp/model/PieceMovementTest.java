@@ -95,8 +95,35 @@ public class PieceMovementTest {
         }
     }
 
+    @Ignore
+    @Test
+    public void testing(){
 
-    //Testing King piece
+        Piece queen = new Queen(PieceType.BLACK_QUEEN, 'E', 5);
+
+        for (Square square : chessBoard.getChessBoard()) {
+            if (square.getPiece() == null && square.getPosition().equals("E5")) {
+                square.setPiece(queen);
+            }
+        }
+        try {
+            queen.movePiece('A', 1, chessBoard.getChessBoard());
+            queen = chessBoard.getChessBoard().get(0).getPiece();
+            queen.movePiece('H',1,chessBoard.getChessBoard());
+        } catch (InvalidMoveException e) {
+            e.printStackTrace();
+        }
+        for (Square square : chessBoard.getChessBoard()) {
+            if (square.getPiece() != null) {
+                System.out.println(square.getPosition() + ", " + square.getPiece().getPieceType() + ", " + square.getPiece().getCurrentPosition());
+            } else {
+                System.out.println(square.getPosition() + ", " + square.getPiece());
+            }
+        }
+    }
+
+
+    //Test King piece
     @Test
     public void testKingLegalMove() {
 
@@ -173,7 +200,7 @@ public class PieceMovementTest {
 
     }
 
-    //Testing Queen piece
+    //Test Queen piece
     @Test
     public void testQueenLegalMove() {
 
@@ -243,4 +270,77 @@ public class PieceMovementTest {
         }
         queen.movePiece('E', 8, chessBoard.getChessBoard());
     }
+
+    //Test Rook piece
+    @Test
+    public void testRookLegalMove() {
+
+        Piece rook = new Rook(PieceType.BLACK_ROOK, 'A', 5);
+
+        for (Square square : chessBoard.getChessBoard()) {
+            if (square.getPiece() == null && square.getPosition().equals("A5")) {
+                square.setPiece(rook);
+            }
+        }
+        try {
+            rook.movePiece('A', 1, chessBoard.getChessBoard());
+        } catch (InvalidMoveException e) {
+            //
+        }
+
+        assertTrue(chessBoard.getChessBoard().get(0).getPiece().getPieceType().equals(PieceType.BLACK_ROOK));
+    }
+
+    @Test(expected = InvalidMoveException.class)
+    public void testRookIlegalMove() throws InvalidMoveException {
+        Piece rook = new Rook(PieceType.BLACK_ROOK, 'E', 5);
+
+        for (Square square : chessBoard.getChessBoard()) {
+            if (square.getPiece() == null && square.getPosition().equals("E5")) {
+                square.setPiece(rook);
+            }
+        }
+
+        rook.movePiece('F', 6, chessBoard.getChessBoard());
+    }
+
+    @Test
+    public void testRookCanEatOppositeSetPiece() {
+        Piece rook = new Rook(PieceType.BLACK_ROOK, 'E', 5);
+
+        for (Square square : chessBoard.getChessBoard()) {
+            if (square.getPosition().equals("E5")) {
+                square.setPiece(rook);
+            }
+            if (square.getPosition().equals("E8")) {
+                square.setPiece(new Pawn(PieceType.WHITE_PAWN, square.getPosition().charAt(0), Integer.parseInt(square.getPosition().substring(1))));
+            }
+        }
+        try {
+            rook.movePiece('E', 8, chessBoard.getChessBoard());
+        } catch (InvalidMoveException e) {
+            //
+        }
+
+        Square square = chessBoard.getChessBoard().get(39); //"E8" has index 39 in chess board list
+
+        assertTrue(square.getPiece().getPieceType().equals(PieceType.BLACK_ROOK));
+    }
+
+    @Test(expected = InvalidMoveException.class)
+    public void testRookCannotEatSameSetPiece() throws InvalidMoveException {
+        Piece rook = new Rook(PieceType.BLACK_ROOK, 'E', 5);
+
+        for (Square square : chessBoard.getChessBoard()) {
+            if (square.getPosition().equals("E5")) {
+                square.setPiece(rook);
+            }
+            if (square.getPosition().equals("E8")) {
+                square.setPiece(new Pawn(PieceType.BLACK_PAWN, square.getPosition().charAt(0), Integer.parseInt(square.getPosition().substring(1))));
+            }
+        }
+        rook.movePiece('E', 8, chessBoard.getChessBoard());
+    }
+
+
 }
