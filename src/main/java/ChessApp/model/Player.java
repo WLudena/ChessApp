@@ -7,28 +7,21 @@ public class Player {
 
     private String name;
 
-    private List<Piece> capturedPieces = new ArrayList<>();
+    private int playerId;
 
-    private List<Piece> playerSet;
+    public Player(){}
 
-    public Player(String name){
+    public Player(String name, int playerId){
         this.name = name;
+        this.playerId = playerId;
     }
 
-    public void setCapturedPiece(Piece piece){
-        capturedPieces.add(piece);
+    public int getPlayerId() {
+        return playerId;
     }
 
-    public List<Piece> getCapturedPieces() {
-        return capturedPieces;
-    }
-
-    public List<Piece> getPlayerSet() {
-        return playerSet;
-    }
-
-    public void setPlayerSet(List<Piece> playerSet) {
-        this.playerSet = playerSet;
+    public void setPlayerId(int playerId) {
+        this.playerId = playerId;
     }
 
     public String getName() {
