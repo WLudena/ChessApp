@@ -9,8 +9,7 @@ import java.util.List;
 
 public class Rook extends Piece {
 
-    public Rook() {
-    }
+    public Rook() {}
 
     public Rook(PieceType pieceType, char currentFile, int currentRank) {
         super(pieceType, currentFile, currentRank);
@@ -58,11 +57,6 @@ public class Rook extends Piece {
         List<Character> fileList = Arrays.asList('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H');
 
         List<String> possibleMoves = new ArrayList<>();
-
-        //Used to keep track of file/rank when moving in diagonal direction
-        int increase = 1;
-        int decrease = -1;
-
 
         int fileIndex = fileList.indexOf(getCurrentFile());
 
@@ -143,5 +137,4 @@ public class Rook extends Piece {
                     }
                 });
     }
-
 }

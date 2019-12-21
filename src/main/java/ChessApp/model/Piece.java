@@ -58,7 +58,7 @@ public abstract class Piece implements MovementInterface{
     }
 
     public String getCurrentPosition(){
-        return Character.toString(currentFile) + String.valueOf(currentRank);
+        return Character.toString(currentFile) + currentRank;
     }
 
 }

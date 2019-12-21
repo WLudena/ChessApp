@@ -103,7 +103,7 @@ public class Queen extends Piece {
                     possibleMoves.add(fileList.get(i) + String.valueOf((getCurrentRank() + increase)));
                     break;
                 } else {
-                    possibleMoves.add(fileList.get(i) + String.valueOf((getCurrentPosition() + increase)));
+                    possibleMoves.add(fileList.get(i) + String.valueOf((getCurrentRank() + increase)));
                     increase++;
                 }
             }

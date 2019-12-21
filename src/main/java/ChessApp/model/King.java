@@ -10,8 +10,7 @@ import java.util.Map;
 
 public class King extends Piece {
 
-    public King() {
-    }
+    public King() {}
 
     public King(PieceType pieceType, char currentFile, int currentRank) {
         super(pieceType, currentFile, currentRank);

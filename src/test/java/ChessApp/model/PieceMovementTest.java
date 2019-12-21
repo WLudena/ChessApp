@@ -122,6 +122,15 @@ public class PieceMovementTest {
         }
     }
 
+    @Ignore
+    @Test
+    public void testingHorsey(){
+        Knight knight = new Knight(PieceType.BLACK_KNIGHT,'H',4);
+
+        for(String s : knight.testingMoves()){
+            System.out.println(s);
+        }
+    }
 
     //Test King piece
     @Test
@@ -322,7 +331,7 @@ public class PieceMovementTest {
             //
         }
 
-        Square square = chessBoard.getChessBoard().get(39); //"E8" has index 39 in chess board list
+        Square square = chessBoard.getChessBoard().get(39);
 
         assertTrue(square.getPiece().getPieceType().equals(PieceType.BLACK_ROOK));
     }
@@ -342,5 +351,146 @@ public class PieceMovementTest {
         rook.movePiece('E', 8, chessBoard.getChessBoard());
     }
 
+    //Test Bishop piece
+    @Test
+    public void testBishopLegalMove() {
+
+        Piece bishop = new Bishop(PieceType.WHITE_BISHOP, 'E', 5);
+
+        for (Square square : chessBoard.getChessBoard()) {
+            if (square.getPosition().equals("E5")) {
+                square.setPiece(bishop);
+            }
+        }
+        try {
+            bishop.movePiece('B', 2, chessBoard.getChessBoard());
+        } catch (InvalidMoveException e) {
+            //
+        }
+
+        assertTrue(chessBoard.getChessBoard().get(9).getPiece().getPieceType().equals(PieceType.WHITE_BISHOP));
+    }
+
+    @Test(expected = InvalidMoveException.class)
+    public void testBishopIlegalMove() throws InvalidMoveException {
+        Piece bishop = new Bishop(PieceType.WHITE_BISHOP, 'E', 5);
+
+        for (Square square : chessBoard.getChessBoard()) {
+            if (square.getPosition().equals("E5")) {
+                square.setPiece(bishop);
+            }
+        }
+
+        bishop.movePiece('F', 5, chessBoard.getChessBoard());
+    }
+
+    @Test
+    public void testBishopCanEatOppositeSetPiece() {
+        Piece bishop = new Bishop(PieceType.WHITE_BISHOP, 'E', 5);
+
+        for (Square square : chessBoard.getChessBoard()) {
+            if (square.getPosition().equals("E5")) {
+                square.setPiece(bishop);
+            }
+            if (square.getPosition().equals("F6")) {
+                square.setPiece(new Pawn(PieceType.BLACK_PAWN, square.getPosition().charAt(0), Integer.parseInt(square.getPosition().substring(1))));
+            }
+        }
+        try {
+            bishop.movePiece('F', 6, chessBoard.getChessBoard());
+        } catch (InvalidMoveException e) {
+            //
+        }
+
+        Square square = chessBoard.getChessBoard().get(45);
+
+        assertTrue(square.getPiece().getPieceType().equals(PieceType.WHITE_BISHOP));
+    }
+
+    @Test(expected = InvalidMoveException.class)
+    public void testBishopCannotEatSameSetPiece() throws InvalidMoveException {
+        Piece bishop = new Bishop(PieceType.WHITE_BISHOP, 'E', 5);
+
+        for (Square square : chessBoard.getChessBoard()) {
+            if (square.getPosition().equals("E5")) {
+                square.setPiece(bishop);
+            }
+            if (square.getPosition().equals("C7")) {
+                square.setPiece(new Pawn(PieceType.WHITE_PAWN, square.getPosition().charAt(0), Integer.parseInt(square.getPosition().substring(1))));
+            }
+        }
+        bishop.movePiece('C', 87, chessBoard.getChessBoard());
+    }
+
+    //Test Knight piece
+    @Test
+    public void testKnightLegalMove() {
+
+        Piece knight = new Knight(PieceType.BLACK_KNIGHT, 'B', 1);
+
+        for (Square square : chessBoard.getChessBoard()) {
+            if (square.getPiece() == null && square.getPosition().equals("B1")) {
+                square.setPiece(knight);
+            }
+        }
+        try {
+            knight.movePiece('A', 3, chessBoard.getChessBoard());
+        } catch (InvalidMoveException e) {
+            //
+        }
+
+        assertTrue(chessBoard.getChessBoard().get(2).getPiece().getPieceType().equals(PieceType.BLACK_KNIGHT));
+    }
+
+    @Test(expected = InvalidMoveException.class)
+    public void testKnightIlegalMove() throws InvalidMoveException {
+        Piece knight = new Knight(PieceType.BLACK_KNIGHT, 'B', 1);
+
+        for (Square square : chessBoard.getChessBoard()) {
+            if (square.getPiece() == null && square.getPosition().equals("E5")) {
+                square.setPiece(knight);
+            }
+        }
+
+        knight.movePiece('B', 2, chessBoard.getChessBoard());
+    }
+
+    @Test
+    public void testKnightCanEatOppositeSetPiece() {
+        Piece knight = new Knight(PieceType.BLACK_KNIGHT, 'B', 1);
+
+        for (Square square : chessBoard.getChessBoard()) {
+            if (square.getPosition().equals("B1")) {
+                square.setPiece(knight);
+            }
+            if (square.getPosition().equals("A3")) {
+                square.setPiece(new Pawn(PieceType.WHITE_PAWN, square.getPosition().charAt(0), Integer.parseInt(square.getPosition().substring(1))));
+            }
+        }
+        try {
+            knight.movePiece('A', 3, chessBoard.getChessBoard());
+        } catch (InvalidMoveException e) {
+            //
+        }
+
+        Square square = chessBoard.getChessBoard().get(2);
+
+        assertTrue(square.getPiece().getPieceType().equals(PieceType.BLACK_KNIGHT));
+    }
+
+    @Test(expected = InvalidMoveException.class)
+    public void testKnightCannotEatSameSetPiece() throws InvalidMoveException {
+        Piece knight = new Knight(PieceType.BLACK_KNIGHT, 'B', 1);
+
+        for (Square square : chessBoard.getChessBoard()) {
+            if (square.getPosition().equals("B1")) {
+                square.setPiece(knight);
+            }
+            if (square.getPosition().equals("A3")) {
+                square.setPiece(new Pawn(PieceType.BLACK_PAWN, square.getPosition().charAt(0), Integer.parseInt(square.getPosition().substring(1))));
+            }
+        }
+        knight.movePiece('A', 3, chessBoard.getChessBoard());
+    }
 
 }
