@@ -3,12 +3,24 @@ package ChessApp.model;
 import ChessApp.model.interfaces.MovementInterface;
 import ChessApp.model.types.PieceType;
 
+import java.util.List;
+
 public abstract class Piece implements MovementInterface{
 
     private PieceType pieceType;
     private char currentFile; //Horizontal position --> from A to H ** Same as current X position
     private int currentRank; //Vertical position --> from 1-8 ** Same as current Y position
     private boolean isTaken = false;
+
+    private List<String> availableMoves;
+
+    public List<String> getAvailableMoves() {
+        return availableMoves;
+    }
+
+    public void setAvailableMoves(List<String> availableMoves) {
+        this.availableMoves = availableMoves;
+    }
 
     public boolean isTaken() {
         return isTaken;
