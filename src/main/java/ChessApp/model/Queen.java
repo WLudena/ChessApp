@@ -1,7 +1,6 @@
 package ChessApp.model;
 
 import ChessApp.exceptions.InvalidMoveException;
-import ChessApp.model.types.PieceType;
 
 import java.util.*;
 

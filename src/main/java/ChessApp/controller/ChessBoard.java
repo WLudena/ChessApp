@@ -1,7 +1,7 @@
 package ChessApp.controller;
 
 import ChessApp.model.*;
-import ChessApp.model.types.PieceType;
+import ChessApp.model.PieceType;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +13,13 @@ public class ChessBoard {
     private final char[] allFiles = {'A','B','C','D','E','F','G','H'}; //Used when creating different pawns
 
     private List<Square> chessBoard = new ArrayList<>(); // Use an Array list as it becomes a bit awkward when adding values to simple array
+
+
+    //Automatically set up board when class is initialized
+    {
+        setUpBoard();
+    }
+
 
     public void setUpBoard(){
         createEmptyBoard();

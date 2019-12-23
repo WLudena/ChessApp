@@ -1,9 +1,7 @@
 package ChessApp.model;
 
 import ChessApp.exceptions.InvalidMoveException;
-import ChessApp.model.types.PieceType;
 
-import java.io.InvalidObjectException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -38,7 +36,9 @@ public class Pawn extends Piece {
 
         String nextPosition = Character.toString(nextFile) + nextRank;
 
-        if (possibleMoves(board).contains(nextPosition)) {
+        List<String> currentMoves = possibleMoves(board);
+
+        if (currentMoves.contains(nextPosition)) {
 
             Square currentSquare = board.stream()
                     .filter(square -> square.getPosition().equals(getCurrentPosition()))
@@ -83,6 +83,10 @@ public class Pawn extends Piece {
                         possibleMoves.add(getCurrentFile() + String.valueOf(getCurrentRank() + i));
                     }
                 }
+            }else{
+                if (getCurrentRank() + 1 < 9 && squareIsEmpty(getCurrentFile() + String.valueOf(getCurrentRank() + 1), board)) {
+                    possibleMoves.add(getCurrentFile() + String.valueOf(getCurrentRank() + 1));
+                }
             }
 
             //Check right diagonal square: if contains opposite type piece, adds it to the list
@@ -114,20 +118,18 @@ public class Pawn extends Piece {
         if (getPieceType().getTypeCode() < 0) {
             //If it has not yet moves for the first time, it can move 2 spaces forward
             if (!hasMoved) {
-                for (int i = - 2; i < 0; i++) {
+                for (int i = -2; i < 0; i++) {
                     if (getCurrentRank() + i > 0 && !squareIsEmpty(getCurrentFile() + String.valueOf(getCurrentRank() + i), board)) {
                         break;
                     } else {
                         possibleMoves.add(getCurrentFile() + String.valueOf(getCurrentRank() + i));
                     }
                 }
+            }else{
+                if (getCurrentRank() + 1 < 9 && squareIsEmpty(getCurrentFile() + String.valueOf(getCurrentRank() + 1), board)) {
+                    possibleMoves.add(getCurrentFile() + String.valueOf(getCurrentRank() + 1));
+                }
             }
-
-            //Normal movement forward (checks if next front square is empty and only adds it to the list if so)
-            if (getCurrentRank() - 1 > 0 && squareIsEmpty(getCurrentFile() + String.valueOf(getCurrentRank() - 1), board)) {
-                possibleMoves.add(getCurrentFile() + String.valueOf(getCurrentRank() - 1));
-            }
-
             //Check right diagonal square: if contains opposite type piece, adds it to the list
             if (fileIndex + 1 < fileList.size() && getCurrentRank() - 1 > 0) {
                 Square rightDiagonalSquare = board.stream()

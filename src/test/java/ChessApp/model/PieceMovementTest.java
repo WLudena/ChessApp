@@ -2,7 +2,6 @@ package ChessApp.model;
 
 import ChessApp.controller.ChessBoard;
 import ChessApp.exceptions.InvalidMoveException;
-import ChessApp.model.types.PieceType;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;

@@ -1,4 +1,4 @@
-package ChessApp.model.interfaces;
+package ChessApp.model;
 
 import ChessApp.exceptions.InvalidMoveException;
 import ChessApp.model.Square;

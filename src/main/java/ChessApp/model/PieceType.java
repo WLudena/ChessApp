@@ -1,4 +1,4 @@
-package ChessApp.model.types;
+package ChessApp.model;
 
 public enum PieceType {
     //White pieces

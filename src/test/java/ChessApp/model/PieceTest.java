@@ -2,7 +2,6 @@ package ChessApp.model;
 
 import static org.junit.Assert.*;
 
-import ChessApp.model.types.PieceType;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

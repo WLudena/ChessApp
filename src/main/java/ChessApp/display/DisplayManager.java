@@ -8,6 +8,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.SimpleTimeZone;
 
 public class DisplayManager {
 
@@ -27,13 +28,13 @@ public class DisplayManager {
         return players;
     }
 
-    public String getPieceRequest(String path) throws PieceLoaderException {
-        System.out.println("What piece would you like to move?: ");
+    public String getPieceRequest(Player player, String path) throws PieceLoaderException {
+        System.out.println( player.getName() + ", what piece would you like to move?: ");
 
         File dir = new File(path);
         List<String> pieces = getPieces(dir);
 
-        String pieceType = scanner.nextLine();
+        String pieceType = scanner.nextLine().toUpperCase();
         if (pieces.contains(pieceType)) {
             return pieceType;
         } else {
@@ -44,9 +45,10 @@ public class DisplayManager {
     //This would return the different piece types available for the player
     private List<String> getPieces(File dir) {
         List<String> pieces = new ArrayList<>();
-        for (String s : dir.list()) {
-            if (!s.equals("Piece.java") || !s.equals("Player.java") || !s.equals("Square.java")) {
-                pieces.add(s);
+         for (String s : dir.list()) {
+            if (!s.equals("Piece.java") || !s.equals("Player.java") || !s.equals("Square.java") || !s.equals("types") || !s.equals("interfaces")) {
+                s = s.substring(0,s.indexOf('.'));
+                pieces.add(s.toUpperCase());
             }
         }
         return pieces;
