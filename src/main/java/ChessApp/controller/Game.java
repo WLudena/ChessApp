@@ -16,12 +16,12 @@ public class Game {
     private ChessBoard chessBoard = new ChessBoard();
     private Display display = new Display();
     private DisplayManager displayManager = new DisplayManager();
-    private PieceLoader loader = new PieceLoader();
 
     private Scanner input = new Scanner(System.in);
 
     public void startGame() {
 
+        System.out.println("\n");
         System.out.println("Java Chess!");
 
         List<Square> board = chessBoard.getChessBoard();
@@ -34,10 +34,10 @@ public class Game {
 
         while (checkKings(board) && !hasForfeit) {
             //Display board
-            display.displayBoard(players, board);
             if (playersTurn) {
                 //First player turn
                 try {
+                    display.displayBoard(1, players, board);
                     String pieceType = displayManager.getPieceRequest(players[0]);
                     System.out.println("From?: ");
                     String location = input.nextLine();
@@ -69,6 +69,7 @@ public class Game {
             } else {
                 //Second player turn
                 try {
+                    display.displayBoard(2, players, board);
                     String pieceType = displayManager.getPieceRequest(players[1]);
                     System.out.println("From?: ");
                     String location = input.nextLine();
@@ -95,7 +96,7 @@ public class Game {
                     }
                     playersTurn = true;
 
-                } catch (PieceLoaderException | InvalidMoveException e) {
+                } catch (PieceLoaderException | InvalidMoveException | NumberFormatException e) {
                     System.out.println(e.getMessage());
                 }
             }
