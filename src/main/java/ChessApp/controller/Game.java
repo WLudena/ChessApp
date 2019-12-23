@@ -27,45 +27,72 @@ public class Game {
         List<Square> board = chessBoard.getChessBoard();
         Player[] players = displayManager.setPlayers(); //Set initial players names
 
+        boolean hasForfeit = false;
+        int loserId = 0;
+
         boolean playersTurn = true; //When true, it is first player's turn, else second player
 
-        while (checkKings(board)) {
+        while (checkKings(board) && !hasForfeit) {
             //Display board
-            display.displayBoard(players,board);
-            if(playersTurn){
+            display.displayBoard(players, board);
+            if (playersTurn) {
                 //First player turn
                 try {
-                    String pieceType = displayManager.getPieceRequest(players[0],loader.getPiecesLocation());
+                    String pieceType = displayManager.getPieceRequest(players[0]);
                     System.out.println("From?: ");
                     String location = input.nextLine();
+                    Piece piece = null;
 
-                    Piece piece = PieceLoader.selectPiece(pieceType, location,1, board);
+                    if (!location.equalsIgnoreCase("ff")) {
+                        piece = PieceLoader.selectPiece(pieceType, location, 1, board);
+                    } else {
+                        hasForfeit = true;
+                        break;
+                    }
 
                     System.out.println("To?: ");
                     String destination = input.nextLine();
 
-                    piece.movePiece(Character.toUpperCase(destination.charAt(0)),Integer.valueOf(destination.substring(1)),board);
+                    if (!destination.equalsIgnoreCase("ff")) {
+                        piece.movePiece(Character.toUpperCase(destination.charAt(0)), Integer.valueOf(destination.substring(1)), board);
+
+                    } else {
+                        hasForfeit = true;
+                        break;
+                    }
 
                     playersTurn = false;
 
                 } catch (PieceLoaderException | InvalidMoveException | NumberFormatException e) {
                     System.out.println(e.getMessage());
                 }
-            }
-            else{
+            } else {
                 //Second player turn
                 try {
-                    String pieceType = displayManager.getPieceRequest(players[1],loader.getPiecesLocation());
+                    String pieceType = displayManager.getPieceRequest(players[1]);
                     System.out.println("From?: ");
                     String location = input.nextLine();
 
-                    Piece piece = PieceLoader.selectPiece(pieceType, location,2, board);
+                    Piece piece = null;
+
+                    if (!location.equalsIgnoreCase("ff")) {
+                        piece = PieceLoader.selectPiece(pieceType, location, 2, board);
+                    } else {
+                        hasForfeit = true;
+                        loserId = 1;
+                        break;
+                    }
 
                     System.out.println("To?: ");
                     String destination = input.nextLine();
 
-                    piece.movePiece(Character.toUpperCase(destination.charAt(0)),Integer.valueOf(destination.substring(1)),board);
-
+                    if (!destination.equalsIgnoreCase("ff")) {
+                        piece.movePiece(Character.toUpperCase(destination.charAt(0)), Integer.valueOf(destination.substring(1)), board);
+                    } else {
+                        hasForfeit = true;
+                        loserId = 1;
+                        break;
+                    }
                     playersTurn = true;
 
                 } catch (PieceLoaderException | InvalidMoveException e) {
@@ -74,29 +101,35 @@ public class Game {
             }
         }
 
-        System.out.println(checkWinner(players,board) + " wins!");
+        if (checkKings(board) && hasForfeit && loserId == 0) {
+            System.out.println(players[0].getName() + " has forfeit!");
+        } else if (checkKings(board) && hasForfeit && loserId == 1) {
+            System.out.println(players[1].getName() + " has forfeit!");
+        } else {
+            System.out.println(checkWinner(players, board) + " wins!");
+        }
     }
 
     private boolean checkKings(List<Square> board) {
 
         Square whiteKingSquare = board.stream()
-                .filter(square -> square.getPiece()!=null && square.getPiece().getPieceType().getTypeCode() == 1)
+                .filter(square -> square.getPiece() != null && square.getPiece().getPieceType().getTypeCode() == 1)
                 .findFirst()
                 .orElse(null);
 
         Square blackKingSquare = board.stream()
-                .filter(square -> square.getPiece()!=null && square.getPiece().getPieceType().getTypeCode() == -1)
+                .filter(square -> square.getPiece() != null && square.getPiece().getPieceType().getTypeCode() == -1)
                 .findFirst()
                 .orElse(null);
 
-        if(whiteKingSquare != null && blackKingSquare != null){
+        if (whiteKingSquare != null && blackKingSquare != null) {
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
-    private String checkWinner(Player[] players, List<Square> board){
+    private String checkWinner(Player[] players, List<Square> board) {
 
         /*
         No need to check for both kings as when the program reaches this method,
@@ -104,14 +137,14 @@ public class Game {
         */
 
         Square whiteKingSquare = board.stream()
-                .filter(square -> square.getPiece()!=null && square.getPiece().getPieceType().getTypeCode() == 1)
+                .filter(square -> square.getPiece() != null && square.getPiece().getPieceType().getTypeCode() == 1)
                 .findFirst()
                 .orElse(null);
 
-        if(whiteKingSquare == null){
+        if (whiteKingSquare == null) {
             //If white king no longer exists, black/second player wins
             return players[1].getName();
-        }else{
+        } else {
             //If black king no longer exists, then white/first player wins
             return players[0].getName();
         }

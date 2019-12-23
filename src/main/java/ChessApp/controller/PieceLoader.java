@@ -8,19 +8,6 @@ import java.util.List;
 
 public class PieceLoader {
 
-    private String name;
-    private static final String SRC = "/src/main/java/";
-
-    {
-        String classPath = Piece.class.getName();
-        name = classPath.substring(0, classPath.lastIndexOf('.'));
-    }
-
-    public String getPiecesLocation() {
-        String classPathStr = System.getProperty("user.dir");
-        return (classPathStr + SRC + name.replace('.', '/'));
-    }
-
     public static Piece selectPiece(String piece, String location, int playerId, List<Square> board) throws PieceLoaderException {
 
         if (playerId == 1) {

@@ -1,5 +1,3 @@
-package ChessApp;
-
 import ChessApp.controller.Game;
 
 /**

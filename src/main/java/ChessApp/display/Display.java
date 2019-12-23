@@ -8,10 +8,10 @@ import java.util.List;
 public class Display {
 
     private final String COLOUR_RESET = "\u001B[0m";
-    private final String WHITE_PLAYER_BACKGROUND = "\u001B[40m";
-    private final String BLACK_PLAYER_BACKGROUND = "\u001B[47m";
-    private final String WHITE_PIECE_COLOUR = "\u001B[30m";
-    private final String BLACK_PIECE_COLOUR = "\u001B[37m";
+    private final String WHITE_PLAYER_BACKGROUND = "\u001B[47m";
+    private final String BLACK_PLAYER_BACKGROUND = "\u001B[40m";
+    private final String WHITE_PIECE_COLOUR = "\u001B[37m";
+    private final String BLACK_PIECE_COLOUR = "\u001B[30m";
 
     public void displayBoard(Player[] players, List<Square> board) {
 
@@ -220,7 +220,7 @@ public class Display {
         System.out.printf("%-65s" + BLACK_PLAYER_BACKGROUND + WHITE_PIECE_COLOUR + "%-15s" + COLOUR_RESET, "", players[1].getName() + "'s side (Black side)");
         System.out.println("\n");
 
-        for(int i = 0; i < 15; i++){
+        for(int i = 0; i < 20; i++){
             System.out.println("");
         }
 

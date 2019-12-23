@@ -1,14 +1,12 @@
 package ChessApp.display;
 
 import ChessApp.exceptions.PieceLoaderException;
-import ChessApp.model.Piece;
 import ChessApp.model.Player;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-import java.util.SimpleTimeZone;
 
 public class DisplayManager {
 
@@ -28,11 +26,10 @@ public class DisplayManager {
         return players;
     }
 
-    public String getPieceRequest(Player player, String path) throws PieceLoaderException {
+    public String getPieceRequest(Player player) throws PieceLoaderException {
         System.out.println( player.getName() + ", what piece would you like to move?: ");
 
-        File dir = new File(path);
-        List<String> pieces = getPieces(dir);
+        List<String> pieces = getPieces();
 
         String pieceType = scanner.nextLine().toUpperCase();
         if (pieces.contains(pieceType)) {
@@ -42,15 +39,15 @@ public class DisplayManager {
         }
     }
 
-    //This would return the different piece types available for the player
-    private List<String> getPieces(File dir) {
+    private List<String> getPieces(){
         List<String> pieces = new ArrayList<>();
-         for (String s : dir.list()) {
-            if (!s.equals("Piece.java") || !s.equals("Player.java") || !s.equals("Square.java") || !s.equals("types") || !s.equals("interfaces")) {
-                s = s.substring(0,s.indexOf('.'));
-                pieces.add(s.toUpperCase());
-            }
-        }
+        pieces.add("KING");
+        pieces.add("QUEEN");
+        pieces.add("ROOK");
+        pieces.add("BISHOP");
+        pieces.add("KNIGHT");
+        pieces.add("PAWN");
+
         return pieces;
     }
 }
