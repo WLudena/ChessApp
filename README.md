@@ -1,4 +1,4 @@
-# CJava Chess!
+# Java Chess!
 
 **Welcome to Java Chess!**
 
