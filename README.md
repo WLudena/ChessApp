@@ -2,6 +2,8 @@
 
 **Welcome to Java Chess!**
 
+This is a CMD application only. GUI is still work in progress!
+
 ***Setting players:***
 	
 		- Player one is on whites
